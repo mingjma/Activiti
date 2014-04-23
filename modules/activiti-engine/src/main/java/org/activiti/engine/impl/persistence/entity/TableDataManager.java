@@ -13,6 +13,16 @@
 
 package org.activiti.engine.impl.persistence.entity;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricDetail;
@@ -39,16 +49,6 @@ import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 
 /**
  * @author Tom Baeyens
@@ -57,8 +57,8 @@ public class TableDataManager extends AbstractManager {
   
   private static Logger log = LoggerFactory.getLogger(TableDataManager.class);
   
-  public static Map<Class<?>, String> apiTypeToTableNameMap = new HashMap<Class<?>, String>();
-  public static Map<Class<? extends PersistentObject>, String> persistentObjectToTableNameMap = new HashMap<Class<? extends PersistentObject>, String>();
+  public static Map<Class<?>, String> apiTypeToTableNameMap = new LinkedHashMap<Class<?>, String>();
+  public static Map<Class<? extends PersistentObject>, String> persistentObjectToTableNameMap = new LinkedHashMap<Class<? extends PersistentObject>, String>();
   
   static {
     // runtime
@@ -136,7 +136,7 @@ public class TableDataManager extends AbstractManager {
   }
 
   public Map<String, Long> getTableCount() {
-    Map<String, Long> tableCount = new HashMap<String, Long>();
+    Map<String, Long> tableCount = new LinkedHashMap<String, Long>();
     try {
       for (String tableName: getTablesPresentInDatabase()) {
         tableCount.put(tableName, getTableCount(tableName));
