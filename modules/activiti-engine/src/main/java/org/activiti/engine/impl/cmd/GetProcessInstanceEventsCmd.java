@@ -19,23 +19,48 @@ import java.util.List;
 import org.activiti.engine.impl.interceptor.Command;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.task.Event;
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
  * @author Tom Baeyens
+ * @author Henry Yan
  */
 public class GetProcessInstanceEventsCmd implements Command<List<Event>>, Serializable {  
 
   private static final long serialVersionUID = 1L;
   protected String processInstanceId;
+  protected String type;
+  protected String action;
   
   public GetProcessInstanceEventsCmd(String processInstanceId) {
     this.processInstanceId = processInstanceId;
   }
 
+  public GetProcessInstanceEventsCmd(String processInstanceId, String type) {
+    this.processInstanceId = processInstanceId;
+    this.type = type;
+  }
+
+  public GetProcessInstanceEventsCmd(String processInstanceId, String type, String action) {
+    this.processInstanceId = processInstanceId;
+    this.type = type;
+    this.action = action;
+  }
+
   public List<Event> execute(CommandContext commandContext) {
-    return commandContext
-      .getCommentEntityManager()
-      .findEventsByProcessInstanceId(processInstanceId);
+    if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(action)) {
+      return commandContext
+          .getCommentEntityManager()
+          .findEventsByProcessInstanceId(processInstanceId, type, action);
+    } else if (StringUtils.isNotBlank(type)) {
+      return commandContext
+          .getCommentEntityManager()
+          .findEventsByProcessInstanceId(processInstanceId, type);
+    } else {
+      return commandContext
+          .getCommentEntityManager()
+          .findEventsByProcessInstanceId(processInstanceId);
+    }
   }
 }

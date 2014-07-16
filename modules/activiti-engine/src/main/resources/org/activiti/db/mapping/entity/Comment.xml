@@ -162,19 +162,26 @@
     where TASK_ID_ = #{parameter,jdbcType=VARCHAR}
     order by TIME_ desc
   </select>
-  
-  <select id="selectEventsByProcessInstanceId" parameterType="org.activiti.engine.impl.db.ListQueryParameterObject" resultMap="commentResultMap">
-    select * 
-    from ${prefix}ACT_HI_COMMENT 
-    where PROC_INST_ID_ = #{parameter,jdbcType=VARCHAR}
+
+  <sql id="selectEventsOfProcessInstanceByDetailsSql">
+    select *
+    from ${prefix}ACT_HI_COMMENT
+    where PROC_INST_ID_ = #{processInstanceId,jdbcType=VARCHAR}
+    <if test="type != null">
+      and TYPE_ = #{type,jdbcType=VARCHAR}
+    </if>
+    <if test="action != null">
+      and ACTION_ = #{action,jdbcType=VARCHAR}
+    </if>
     order by TIME_ desc
+  </sql>
+
+  <select id="selectEventsOfProcessInstanceByDetails" parameterType="org.activiti.engine.impl.db.ListQueryParameterObject" resultMap="commentResultMap">
+    <include refid="selectEventsOfProcessInstanceByDetailsSql" />
   </select>
 
-  <select id="selectEventsByProcessInstanceId_postgres" parameterType="org.activiti.engine.impl.db.ListQueryParameterObject" resultMap="commentResultMap_postgres">
-    select * 
-    from ${prefix}ACT_HI_COMMENT 
-    where PROC_INST_ID_ = #{parameter,jdbcType=VARCHAR}
-    order by TIME_ desc
+  <select id="selectEventsOfProcessInstanceByDetails_postgres" parameterType="org.activiti.engine.impl.db.ListQueryParameterObject" resultMap="commentResultMap_postgres">
+    <include refid="selectEventsOfProcessInstanceByDetailsSql" />
   </select>
 
   <select id="selectCommentsByProcessInstanceId" parameterType="org.activiti.engine.impl.db.ListQueryParameterObject" resultMap="commentResultMap">

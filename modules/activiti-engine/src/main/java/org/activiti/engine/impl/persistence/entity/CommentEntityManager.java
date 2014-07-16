@@ -103,7 +103,30 @@ public class CommentEntityManager extends AbstractManager {
   @SuppressWarnings("unchecked")
   public List<Event> findEventsByProcessInstanceId(String processInstanceId) {
     checkHistoryEnabled();
-    return getDbSqlSession().selectList("selectEventsByProcessInstanceId", processInstanceId);
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put("processInstanceId", processInstanceId);
+    return findEventsByProcessInstance(params);
+  }
+
+  public List<Event> findEventsByProcessInstanceId(String processInstanceId, String type) {
+    checkHistoryEnabled();
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put("processInstanceId", processInstanceId);
+    params.put("type", type);
+    return findEventsByProcessInstance(params);
+  }
+
+  public List<Event> findEventsByProcessInstanceId(String processInstanceId, String type, String action) {
+    checkHistoryEnabled();
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put("processInstanceId", processInstanceId);
+    params.put("type", type);
+    params.put("action", action);
+    return findEventsByProcessInstance(params);
+  }
+
+  private List<Event> findEventsByProcessInstance(Map<String, Object> params) {
+    return getDbSqlSession().selectListWithRawParameter("selectEventsOfProcessInstanceByDetails", params, 0, Integer.MAX_VALUE);
   }
 
   public void deleteCommentsByTaskId(String taskId) {
@@ -129,7 +152,7 @@ public class CommentEntityManager extends AbstractManager {
     params.put("type", type);
     return getDbSqlSession().selectListWithRawParameter("selectCommentsByProcessInstanceIdAndType", params, 0, Integer.MAX_VALUE);
   }
-  
+
   public Comment findComment(String commentId) {
     return getDbSqlSession().selectById(CommentEntity.class, commentId);
   }

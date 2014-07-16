@@ -388,4 +388,14 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
     return commandExecutor.execute(new GetProcessInstanceEventsCmd(processInstanceId));
   }
 
+  @Override
+  public List<Event> getProcessInstanceEvents(String processInstanceId, String type) {
+    return commandExecutor.execute(new GetProcessInstanceEventsCmd(processInstanceId, type));
+  }
+
+  @Override
+  public List<Event> getProcessInstanceEvents(String processInstanceId, String type, String action) {
+    return commandExecutor.execute(new GetProcessInstanceEventsCmd(processInstanceId, type, action));
+  }
+
 }

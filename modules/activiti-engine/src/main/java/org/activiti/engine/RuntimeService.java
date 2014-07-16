@@ -969,5 +969,11 @@ public interface RuntimeService {
   
   /** The all events related to the given Process Instance. */
   List<Event> getProcessInstanceEvents(String processInstanceId);
+
+  /** The all events related to the given Process Instance and type. */
+  List<Event> getProcessInstanceEvents(String processInstanceId, String type);
+
+  /** The all events related to the given Process Instance and type and action. */
+  List<Event> getProcessInstanceEvents(String processInstanceId, String type, String action);
     
 }
