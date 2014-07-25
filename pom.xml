@@ -14,7 +14,7 @@
   </parent>
 
   <packaging>pom</packaging>
-  <version>5.16</version>
+  <version>5.16.1-SNAPSHOT</version>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring.framework.version>3.2.7.RELEASE</spring.framework.version>
@@ -60,7 +60,19 @@
     <activiti.osgi.include.resource>{maven-resources}</activiti.osgi.include.resource>
     <activiti.osgi.embed></activiti.osgi.embed>
   </properties>
-
+   <distributionManagement>
+        <repository>
+            <id>allinpay-releases</id>
+            <name>Team Nexus Release Repository</name>
+            <url>http://192.168.102.165:8080/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>allinpay-snapshots</id>
+            <name>Team Nexus Snapshot Repository</name>
+            <url>http://192.168.102.165:8080/nexus/content/repositories/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement> 
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -731,7 +743,7 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
+          <!--<plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
             <executions>
@@ -743,7 +755,7 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
+          </plugin>-->
         </plugins>
       </build>
     </profile>
